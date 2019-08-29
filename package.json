@@ -1,6 +1,6 @@
 {
   "name": "@holiday_peng/json-editor",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A json editor based on react and antd",
   "author": "penglanlan",
   "license": "MIT",
