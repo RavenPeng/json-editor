@@ -11,7 +11,6 @@ export default class JSONEdit {
   }
 }
 JSONEdit.prototype.init = function(){
-  console.log(111,React)
   const self = this;
   function Editor(props) {
     const { useState, useEffect } = React;
