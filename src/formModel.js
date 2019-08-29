@@ -1,3 +1,4 @@
+import React from 'react'
 import Schema from './schema'
 
 export default class FormModel {
