@@ -1,4 +1,3 @@
-// 编辑器对象，保存由表单模型生成表单视图组件、表单元素的添加和删除、表单值的获取、验证和修改等方法
 import React from 'react'
 import { Form, Button } from 'antd'
 import FormItems from './formItems'
@@ -12,6 +11,7 @@ export default class JSONEdit {
   }
 }
 JSONEdit.prototype.init = function(){
+  console.log(111,React)
   const self = this;
   function Editor(props) {
     const { useState, useEffect } = React;
