@@ -1,0 +1,16 @@
+.json-editor-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .json-editor-wrapper .form {
+    width: 40%;
+  }
+  .json-editor-wrapper pre {
+    width: 50%;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: #021e38;
+    color: #fff
+  }

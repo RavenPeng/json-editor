@@ -3,6 +3,7 @@ import React from 'react'
 import { Form, Button } from 'antd'
 import FormItems from './formItems'
 import FormModel from './formModel'
+import './index.css'
 
 export default class JSONEdit {
   constructor(schema) {
@@ -25,13 +26,16 @@ JSONEdit.prototype.init = function(){
         self.fieldsValue = {};
         prop.map(item => self.fieldsValue[fields[item]] = self.FormModelInst.schemaInst.origin[item.split('_')[1]]);
       } else self.fieldsValue = fields;
-      console.log(self.fieldsValue);
+      window.DEBUGGER && console.log(self.fieldsValue);
     };
     return <div className="json-editor-wrapper"> 
       <Form className="form">
         <FormItems formItems={formItems} form={props.form}/>
         <Button onClick={getValues}>Save</Button>
       </Form>
+      <pre>
+        <code>{JSON.stringify(self.fieldsValue, null, 2)}</code>
+      </pre>
     </div>;
   }
   const WrappedEditor = Form.create({ name: 'Editor' })(Editor);
