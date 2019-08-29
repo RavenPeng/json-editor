@@ -1,12 +1,16 @@
 {
-  "name": "json-editor",
+  "name": "@holiday_peng/json-editor",
   "version": "1.0.0",
   "description": "A json editor based on react and antd",
   "author": "penglanlan",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RavenPeng/json-editor.git"
+  },
   "engines": {
     "node": ">=8",
     "npm": ">=5"

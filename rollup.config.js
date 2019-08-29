@@ -15,8 +15,14 @@ export default {
     {
       file: pkg.main,
       format: 'cjs',
-      sourcemap: false,
+      sourcemap: true,
     },
+    {
+      file: pkg.module,
+      format: 'es',
+      sourcemap: true,
+    },
+
   ],
   plugins: [
     postcss({
