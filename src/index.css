@@ -6,6 +6,9 @@
   .json-editor-wrapper .form {
     width: 40%;
   }
+  .json-editor-wrapper .form .ant-input-number {
+    width: 100%;
+  }
   .json-editor-wrapper pre {
     width: 50%;
     border-radius: 4px;
