@@ -1,8 +1,7 @@
 import React from 'react'
 import {
-  Button, Form, Input, Select, Radio, DatePicker, Upload, Icon, Checkbox, InputNumber,
+  Button, Form, Input, Select, Radio, DatePicker, Checkbox, InputNumber,
 } from 'antd'
-import UploadImage from '@/common/component/uploadImage'
 
 const { Option } = Select
 const { TextArea, Search } = Input
@@ -10,58 +9,8 @@ const { RangePicker } = DatePicker
 const RadioGroup = Radio.Group
 
 class FormItems extends React.PureComponent {
-  getUploadFileUrl = (info, key, cb) => {
-    let fileList = info.fileList.slice(-2)
-    fileList = fileList.map(file => {
-      if (file.response) {
-        file.url = file.response.data
-      }
-
-      return file
-    })
-    fileList = fileList.filter(file => {
-      if (file.response) {
-        this.props.form.setFieldsValue({ [key]: file.response.data })
-        if (cb) cb()
-
-        return file
-      }
-
-      return false
-    })
-  };
-
   getItem = item => {
     switch (item.type) {
-      case 'upload':
-        return (
-          <Upload
-            name={item.name || 'file'}
-            action={item.actionPath}
-            headers={{ authorization: 'authorization-text' }}
-            onChange={info => this.getUploadFileUrl(info, item.key, item.onChange)}
-            accept={item.accept}
-            disabled={item.disabled}
-            onRemove={item.onRemove}
-          >
-            <Button>
-              <Icon type="upload" />
-              {item.text || 'Select File'}
-            </Button>
-          </Upload>
-        )
-
-      case 'uploadImg':
-        return (
-          <UploadImage
-            actionPath={item.actionPath}
-            saveImgUrl={info => this.getUploadFileUrl(info, item.key, item.onChange)}
-            isDeleteFile={item.isDeleteFile}
-            name={item.name}
-            onRemove={item.onRemove}
-          />
-        )
-
       case 'dateTime':
         return <DatePicker showTime style={{ width: '100%' }} disabledDate={item.disabledDate} disabledTime={item.disabledTime} />
 
