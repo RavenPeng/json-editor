@@ -4,9 +4,9 @@
   "description": "A json editor based on react and antd",
   "author": "penglanlan",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
+  "main": "./index.js",
+  "module": "./index.es.js",
+  "jsnext:main": "./index.es.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RavenPeng/json-editor.git"
@@ -28,7 +28,9 @@
     "predeploy": "npm run styleguide:build",
     "deploy": "gh-pages -d styleguide"
   },
-  "dependencies": {},
+  "dependencies": {
+    "antd": "^3.23.4"
+  },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
