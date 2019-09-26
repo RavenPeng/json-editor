@@ -54,7 +54,7 @@ var schema = {
 2. because the editor was built based on react and antd, it has to be used in a react project like this: 
 ````
 import React from 'react';
-import Editor from '@holiday_peng/json-editor/dist';
+import Editor from '@holiday_peng/json-editor';
 
 class JSONEditor extends React.Component {
   render() {
