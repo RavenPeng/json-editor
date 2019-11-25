@@ -50,8 +50,8 @@ JSONEdit.prototype.init = function () {
         }
       })
       prop.map(item => delete f[item])
-      
-return f
+
+      return f
     }
     const getValues = () => {
       const { validateFieldsAndScroll } = props.form
@@ -69,31 +69,31 @@ return f
     const hack = () => {
       props.form.validateFieldsAndScroll((err, fields) => {})
     }
-    
-return (
+
+    return (
   <div className="json-editor-wrapper" onClick={hack}>
-        <Form className="form">
+    <Form className="form">
           <FormItems formItems={self.FormModelInst.formModel} form={props.form} />
           <Button onClick={getValues} type="primary">
             Generate JSON
           </Button>
         </Form>
-        {self.isShowPreview ? (
+    {self.isShowPreview ? (
           <pre>
             <code>{JSON.stringify(fieldsValue, null, 2).replace('null,', '')}</code>
           </pre>
         ) : null}
-      </div>
+  </div>
     )
   }
   const WrappedEditor = Form.create({ name: 'Editor' })(Editor)
-  
-return WrappedEditor
+
+  return WrappedEditor
 }
 JSONEdit.prototype.removeFather = function () {
   const self = this
   self.newSchema = self.FormModelInst.schemaInst.deepClone(self.schema)
   self.FormModelInst.schemaInst.removeFather(self.newSchema)
-  
-return self.newSchema
+
+  return self.newSchema
 }
