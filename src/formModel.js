@@ -2,8 +2,9 @@ import React from 'react'
 import Schema from './schema'
 
 export default class FormModel {
-  constructor(schema) {
-    this.schemaInst = new Schema(schema)
+  constructor(opt) {
+    this.propertyName = opt.propertyName || 'Property Name'
+    this.schemaInst = new Schema(opt.schema)
     this.formModel = []
     this.generateFormModel()
   }
@@ -46,9 +47,14 @@ FormModel.prototype.generateFormModel = function () {
         }
         if (item.keyName === '*') {
           self.formModel.push({
-            label: 'Property Name',
+            label: self.propertyName,
             key: `prop_${self.getPropertySuffix(item)}`,
             required: true,
+            initialValue: item.value,
+            onBlur: e => {
+              item.value = e.target.value
+              self.schemaInst.origin = self.schemaInst.getObj(self.schemaInst.schema)
+            },
           })
         } else if (item.type === 'arr' || (item.type === 'obj' && typeof item.key !== 'number')) {
           self.formModel.push({
@@ -62,14 +68,25 @@ FormModel.prototype.generateFormModel = function () {
             </div>,
           })
         }
-        if (['str', 'number'].includes(item.type)) {
+        if (['str', 'number', 'select'].includes(item.type)) {
           self.formModel.push({
             type: item.type,
             label: item.label,
+            options: item.options,
             key: `${item.father.father.father.key === undefined ? '' : item.father.father.father.key}[${item.father.father.key === undefined ? '' : item.father.father.key}][${
               item.father.key === undefined ? '' : item.father.key
             }][${item.key}]`,
             required: true,
+            initialValue: item.value,
+            showSearch: item.showSearch || true,
+            optionFilterProp: item.optionFilterProp || 'children',
+            mode: item.mode,
+            filterOption: (input, option) => option.props.children && option.props.children.toLowerCase().indexOf(input.toLowerCase()) === 0,
+            allowClear: item.allowClear || true,
+            onChange: val => {
+              item.value = val
+              self.schemaInst.origin = self.schemaInst.getObj(self.schemaInst.schema)
+            },
             onBlur: e => {
               item.value = e.target.value
               self.schemaInst.origin = self.schemaInst.getObj(self.schemaInst.schema)

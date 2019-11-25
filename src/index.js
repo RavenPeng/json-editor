@@ -5,18 +5,22 @@ import FormModel from './formModel'
 import './index.css'
 
 export default class JSONEdit {
-  constructor(schema) {
-    this.FormModelInst = new FormModel(schema)
+  constructor(opt) {
+    this.FormModelInst = new FormModel(opt)
+    this.isShowPreview = opt.isShowPreview
+    this.generateCallback = opt.generateCallback
+    this.schema = opt.schema
+    this.newSchema = {}
   }
 }
 JSONEdit.prototype.init = function () {
   const self = this
   function Editor(props) {
     const { useState, useEffect } = React
-    const [formItems, setFormItems] = useState(self.FormModelInst.formModel)
     const [fieldsValue, setFieldsValue] = useState({})
-    useEffect(() => setFormItems([...self.FormModelInst.formModel])); // eslint-disable-line
-
+    useEffect(() => {
+      if (Object.keys(fieldsValue).length) self.generateCallback(fieldsValue)
+    }, [fieldsValue])
     const setProps = (prop, fields) => {
       setFieldsValue({})
       const f = JSON.parse(JSON.stringify(fields))
@@ -46,36 +50,50 @@ JSONEdit.prototype.init = function () {
         }
       })
       prop.map(item => delete f[item])
-
-      return f
+      
+return f
     }
     const getValues = () => {
       const { validateFieldsAndScroll } = props.form
       validateFieldsAndScroll((err, fields) => {
-        if (err) return
-        const prop = Object.keys(fields)
-          .filter(item => item.startsWith('prop'))
-          .reverse()
-        if (prop.length) {
-          setFieldsValue(setProps(prop, fields))
-        } else setFieldsValue(fields)
-        window.DEBUGGER && console.log(fieldsValue)
+        if (!err) {
+          const prop = Object.keys(fields)
+            .filter(item => item.startsWith('prop'))
+            .reverse()
+          if (prop.length) {
+            setFieldsValue(setProps(prop, fields))
+          } else setFieldsValue(fields)
+        }
       })
     }
-
-    return (
-      <div className="json-editor-wrapper">
+    const hack = () => {
+      props.form.validateFieldsAndScroll((err, fields) => {})
+    }
+    
+return (
+  <div className="json-editor-wrapper" onClick={hack}>
         <Form className="form">
-          <FormItems formItems={formItems} form={props.form} />
-          <Button onClick={getValues}>Save</Button>
+          <FormItems formItems={self.FormModelInst.formModel} form={props.form} />
+          <Button onClick={getValues} type="primary">
+            Generate JSON
+          </Button>
         </Form>
-        <pre>
-          <code>{JSON.stringify(fieldsValue, null, 2).replace('null,', '')}</code>
-        </pre>
+        {self.isShowPreview ? (
+          <pre>
+            <code>{JSON.stringify(fieldsValue, null, 2).replace('null,', '')}</code>
+          </pre>
+        ) : null}
       </div>
     )
   }
   const WrappedEditor = Form.create({ name: 'Editor' })(Editor)
-
-  return WrappedEditor
+  
+return WrappedEditor
+}
+JSONEdit.prototype.removeFather = function () {
+  const self = this
+  self.newSchema = self.FormModelInst.schemaInst.deepClone(self.schema)
+  self.FormModelInst.schemaInst.removeFather(self.newSchema)
+  
+return self.newSchema
 }

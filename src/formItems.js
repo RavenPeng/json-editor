@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Button, Form, Input, Select, Radio, DatePicker, Checkbox, InputNumber,
+  Button, Form, Input, Select, Radio, DatePicker, Upload, Icon, Checkbox, InputNumber,
 } from 'antd'
 
 const { Option } = Select
@@ -64,10 +64,10 @@ class FormItems extends React.PureComponent {
         )
 
       case 'textArea':
-        return <TextArea autosize={{ minRows: item.size }} maxLength={item.maxLength} disabled={item.disabled} onBlur={item.onBlur} />
+        return <TextArea autoSize={{ minRows: item.size }} maxLength={item.maxLength} disabled={item.disabled} onBlur={item.onBlur} />
 
       case 'number':
-        return <InputNumber min={item.min} max={item.max} step={item.step} onChange={item.onChange} placeholder={item.placeholder} className={item.className} />
+        return <InputNumber min={item.min} max={item.max} step={item.step} onChange={item.onChange} placeholder={item.placeholder} disabled={item.disabled} className={item.className} />
 
       case 'btn':
         return (
@@ -81,7 +81,7 @@ class FormItems extends React.PureComponent {
 
       case 'check':
         return (
-          <Checkbox.Group>
+          <Checkbox.Group onChange={item.onChange}>
             {item.box.map((box, i) => (
               <Checkbox value={box.value} key={i}>
                 {box.text}

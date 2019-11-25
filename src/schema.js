@@ -16,6 +16,55 @@ Schema.prototype.appendFather = schema => {
   }
   r(schema)
 }
+Schema.prototype.deepClone = function (source, uniqueList) {
+  const isObject = obj => typeof obj === 'object' && obj != null
+  const find = (arr, item) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].source === item) {
+        return arr[i]
+      }
+    }
+
+    return null
+  }
+  if (!isObject(source)) return source
+
+  if (!uniqueList) uniqueList = [] //   初始化数据
+
+  const target = Array.isArray(source) ? [] : {}
+
+  const uniqueData = find(uniqueList, source)
+  if (uniqueData) return uniqueData.target
+
+  uniqueList.push({
+    source,
+    target,
+  })
+
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (isObject(source[key])) {
+        target[key] = this.deepClone(source[key], uniqueList) //   传入数组
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+
+  return target
+}
+Schema.prototype.removeFather = schema => {
+  function r(schema) {
+    if (schema.children) {
+      schema.children.map(child => {
+        child.father = null
+        if (child.options) child.options = [{ value: '1' }]
+        if (child.children) r(child)
+      })
+    }
+  }
+  r(schema)
+}
 Schema.prototype.getObj = function (schema) {
   const self = this
   const target = schema.type === undefined ? {} : schema.type === 'arr' ? [] : {}
@@ -47,8 +96,12 @@ Schema.prototype.handleChildren = item => {
         newChildren.push({
           type: child.type,
           key: child.key,
-          value: '',
+          value: child.mode === 'multiple' ? 'politics' : '',
+          options: child.options,
+          box: child.box,
+          radios: child.radios,
           label: child.label,
+          mode: child.mode,
           father: item,
           children: child.children,
           repeatable: child.repeatable,
