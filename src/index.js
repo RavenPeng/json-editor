@@ -12,14 +12,18 @@ export default class JSONEdit {
     this.schema = opt.schema
     this.newSchema = {}
   }
-}
-JSONEdit.prototype.init = function () {
-  const self = this
-  function Editor(props) {
+  removeFather() {
+    this.newSchema = this.FormModelInst.schemaInst.deepClone(this.schema)
+    this.FormModelInst.schemaInst.removeFather(this.newSchema)
+
+    return this.newSchema
+  }
+  init() {
+  let Editor = (props) => {
     const { useState, useEffect } = React
     const [fieldsValue, setFieldsValue] = useState({})
     useEffect(() => {
-      if (Object.keys(fieldsValue).length) self.generateCallback(fieldsValue)
+      if (Object.keys(fieldsValue).length) this.generateCallback(fieldsValue)
     }, [fieldsValue])
     const setProps = (prop, fields) => {
       setFieldsValue({})
@@ -90,10 +94,4 @@ JSONEdit.prototype.init = function () {
 
   return WrappedEditor
 }
-JSONEdit.prototype.removeFather = function () {
-  const self = this
-  self.newSchema = self.FormModelInst.schemaInst.deepClone(self.schema)
-  self.FormModelInst.schemaInst.removeFather(self.newSchema)
 
-  return self.newSchema
-}
